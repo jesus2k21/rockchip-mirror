@@ -883,6 +883,7 @@ gst_mpp_enc_force_keyframe (GstVideoEncoder * encoder, gboolean keyframe)
   /* HACK: Use gop(1) to force keyframe */
 
   if (!keyframe) {
+    GST_INFO_OBJECT (self, "Not a keyframe, applying prop_dirty=true");
     self->prop_dirty = TRUE;
     return gst_mpp_enc_apply_properties (encoder);
   }
@@ -933,6 +934,7 @@ gst_mpp_enc_loop (GstVideoEncoder * encoder)
   keyframe = GST_VIDEO_CODEC_FRAME_IS_FORCE_KEYFRAME (frame);
   if (keyframe)
     gst_mpp_enc_force_keyframe (encoder, TRUE);
+    GST_INFO_OBJECT (self, "First keyframe if : prop_dirty: %s", self->prop_dirty);
 
   /* Encode one frame */
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
@@ -942,6 +944,7 @@ gst_mpp_enc_loop (GstVideoEncoder * encoder)
 
   if (keyframe)
     gst_mpp_enc_force_keyframe (encoder, FALSE);
+    GST_INFO_OBJECT (self, "Second keyframe if : prop_dirty: %s", self->prop_dirty);
 
   if (!mpkt)
     goto error;
