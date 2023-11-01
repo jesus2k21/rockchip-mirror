@@ -878,10 +878,11 @@ err:
 static gboolean
 gst_mpp_enc_force_keyframe (GstVideoEncoder * encoder, gboolean keyframe)
 {
+  GST_INFO_OBJECT (self, "Entered force_keyframe function");
   GstMppEnc *self = GST_MPP_ENC (encoder);
 
   /* HACK: Use gop(1) to force keyframe */
-
+  GST_INFO_OBJECT (self, "about to check keyframe vale: %s", keyframe);
   if (!keyframe) {
     GST_INFO_OBJECT (self, "Not a keyframe, applying prop_dirty=true");
     self->prop_dirty = TRUE;
